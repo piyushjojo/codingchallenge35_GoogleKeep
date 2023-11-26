@@ -3,6 +3,8 @@ package com.app.cc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ public class UserController {
 	@Autowired
 	private UserService userService ; 
 	
-	@PostMapping
+	@PostMapping("/users")
 	public ResponseEntity<?> register(@RequestBody UserRegistrationDTO body){
 		Users user = userService.getUserByUsernameOrEmail(body.getUsername(), body.getEmail());
 		if(user != null) {
@@ -27,6 +29,15 @@ public class UserController {
                     .body("Username or email is already registered.");
 		}
 		user = userService.register(body.getUsername(), body.getEmail(), body.getPassword());
+		return ResponseEntity.ok(user);
+	}
+	
+	@GetMapping("/users/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable("id") Long id){
+		Users user = userService.getUserById(id);
+		if(user == null) {
+			return ResponseEntity.notFound().build();
+		}
 		return ResponseEntity.ok(user);
 	}
 }
