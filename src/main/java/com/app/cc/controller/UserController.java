@@ -15,13 +15,13 @@ import com.app.cc.entity.Users;
 import com.app.cc.service.UserService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
 	private UserService userService ; 
 	
-	@PostMapping("/users")
+	@PostMapping
 	public ResponseEntity<?> register(@RequestBody UserRegistrationDTO body){
 		Users user = userService.getUserByUsernameOrEmail(body.getUsername(), body.getEmail());
 		if(user != null) {
@@ -32,7 +32,7 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 	
-	@GetMapping("/users/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") Long id){
 		Users user = userService.getUserById(id);
 		if(user == null) {

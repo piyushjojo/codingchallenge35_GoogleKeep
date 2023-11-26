@@ -30,7 +30,7 @@ public class UserService {
 	}
 	
 	public Users getUserById(long id) {
-		return userRepo.getReferenceById(id);
+		return userRepo.findByUserid(id);
 		
 	}
 
